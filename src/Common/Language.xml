@@ -225,6 +225,8 @@
     <entry lang="en" key="IDM_HOTKEY_SETTINGS">Hot Keys...</entry>
     <entry lang="en" key="IDM_KEYFILE_GENERATOR">Keyfile Generator</entry>
     <entry lang="en" key="IDM_LANGUAGE">Language...</entry>
+    <entry lang="en" key="IDM_DARK_MODE">Dark Mode</entry>
+    <entry lang="en" key="DARK_MODE_RESTART">The display mode will change after VeraCrypt has been restarted.</entry>
     <entry lang="en" key="IDM_LICENSE">Legal Notices</entry>
     <entry lang="en" key="IDM_MANAGE_TOKEN_KEYFILES">Manage Security Token Keyfiles...</entry>
     <entry lang="en" key="IDM_MOUNTALL">Auto-Mount All Device-Hosted Volumes</entry>

@@ -2856,8 +2856,11 @@ int WINAPI wWinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, wchar_t *lpsz
 		if (lpszCommandLine[1] == L'p')
 		{
 			// Create self-extracting package:	/p
+			// Quiet (no message boxes, log file VeraCryptPackage.log):	/pq
 
 			bMakePackage = TRUE;
+			if (lpszCommandLine[2] == L'q')
+				Silent = TRUE;
 		}
 		else if (lpszCommandLine[1] == L'd')
 		{
@@ -2875,7 +2878,7 @@ int WINAPI wWinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, wchar_t *lpsz
 	InitApp (hInstance, NULL);
 
 #ifndef PORTABLE
-	if (IsAdmin () != TRUE)
+	if (!(bMakePackage && Silent) && IsAdmin () != TRUE)
 		if (MessageBoxW (NULL, GetString ("SETUP_ADMIN"), lpszTitle, MB_YESNO | MB_ICONQUESTION) != IDYES)
 		{
 			exit (1);
@@ -2894,7 +2897,8 @@ int WINAPI wWinMain (HINSTANCE hInstance, HINSTANCE hPrevInstance, wchar_t *lpsz
 	{
 		/* Create self-extracting package */
 
-		MakeSelfExtractingPackage (NULL, SetupFilesDir, FALSE);
+		if (!MakeSelfExtractingPackage (NULL, SetupFilesDir, FALSE))
+			exit (1);
 	}
 	else
 	{

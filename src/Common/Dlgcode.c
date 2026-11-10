@@ -93,6 +93,8 @@
 #include <comdef.h>
 #include <Wbemidl.h>
 
+#include "DarkMode.h"
+
 #pragma comment(lib, "wbemuuid.lib")
 #pragma comment(lib, "Shlwapi.lib")
 #pragma comment(lib, "setupapi.lib" )
@@ -990,6 +992,13 @@ static BOOL VerifyModuleSignatureInternal (const wchar_t* path, BOOL bAllowMicro
 {
 #if defined(NDEBUG) && !defined (VC_SKIP_OS_DRIVER_REQ_CHECK)
 	BOOL bResult = FALSE;
+#ifdef VC_UNSIGNED_CUSTOM_BUILD
+	// Selbst kompilierte Programmdateien (VeraCrypt.exe, VeraCrypt Format.exe, ...)
+	// tragen keine IDRIX-Signatur. Die Pruefung der Treiberdateien
+	// (bAllowMicrosoftWHQL) bleibt unveraendert aktiv.
+	if (!bAllowMicrosoftWHQL)
+		return TRUE;
+#endif
 	HRESULT hResult;
 	GUID gActionID = WINTRUST_ACTION_GENERIC_VERIFY_V2;
 	WINTRUST_FILE_INFO  fileInfo = {0};
@@ -4151,6 +4160,9 @@ void InitApp (HINSTANCE hInstance, wchar_t *lpszCommandLine)
 	InitCtrls.dwICC = ICC_WIN95_CLASSES | ICC_PAGESCROLLER_CLASS | ICC_NATIVEFNTCTL_CLASS | ICC_STANDARD_CLASSES | ICC_LINK_CLASS;
 	InitCommonControlsEx (&InitCtrls);
 
+	// Dark Mode (standardmaessig aktiv, nur Darstellung)
+	DarkMode_Init ();
+
 	// Load RichEdit library in order to be able to use RichEdit20W class
 	LoadLibraryEx (L"Riched20.dll", NULL, LOAD_LIBRARY_SEARCH_SYSTEM32);
 
@@ -6224,6 +6236,11 @@ void LocalizeDialog (HWND hwnd, char *stringId)
 
 	SetWindowLongPtrW (hwnd, GWLP_USERDATA, (LONG_PTR) 'VERA');
 	SendMessageW (hwnd, WM_SETFONT, (WPARAM) hUserFont, 0);
+
+#ifdef VC_DARKMODE_ENABLED
+	// Dark Mode auch fuer Dialoge aus anderen Threads (z.B. sicherer Desktop)
+	DarkMode_ApplyToDialog (hwnd);
+#endif
 
 	if (stringId == NULL)
 		SetWindowTextW (hwnd, L"VeraCrypt");

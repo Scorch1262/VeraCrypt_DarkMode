@@ -676,6 +676,17 @@ BOOL RestorePrivilegeState(const PPRIVILEGE_STATE state);
 BOOL EnableRequiredSetupPrivileges(PPRIVILEGE_STATE currentState);
 BOOL ModifyFileSecurityPermissions(const wchar_t* filePath, PSECURITY_INFO_BACKUP pBackup);
 #endif
+
+/* Dark Mode (nur Darstellung, siehe Common/DarkMode.h) */
+#if (defined(TCMOUNT) || defined(VOLFORMAT)) && !defined(SETUP) && !defined(VCSDK_DLL) && !defined(VC_COMREG)
+void DarkMode_Init (void);
+void DarkMode_InstallThreadHook (void);
+void DarkMode_RemoveThreadHook (void);
+void DarkMode_ApplyToDialog (HWND hwnd);
+BOOL DarkMode_IsActive (void);
+BOOL DarkMode_IsEnabledSetting (void);
+BOOL DarkMode_SetEnabledSetting (BOOL enabled);
+#endif
 #ifdef __cplusplus
 }
 

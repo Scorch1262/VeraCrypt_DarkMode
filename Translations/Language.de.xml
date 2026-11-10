@@ -228,6 +228,8 @@
     <entry lang="de" key="IDM_HOTKEY_SETTINGS">&amp;Tastenkombinationen...</entry>
     <entry lang="de" key="IDM_KEYFILE_GENERATOR">&amp;Schlüsseldatei(en) erstellen...</entry>
     <entry lang="de" key="IDM_LANGUAGE">&amp;Sprache...</entry>
+    <entry lang="de" key="IDM_DARK_MODE">Dunkler Modus</entry>
+    <entry lang="de" key="DARK_MODE_RESTART">Die Darstellung wird nach einem Neustart von VeraCrypt umgestellt.</entry>
     <entry lang="de" key="IDM_LICENSE">&amp;Lizenzvereinbarung</entry>
     <entry lang="de" key="IDM_MANAGE_TOKEN_KEYFILES">Sicherheitstoken-Schlüsseldateien verwalten...</entry>
     <entry lang="de" key="IDM_MOUNTALL">&amp;Alle Datenträger-Volumes automatisch einhängen...</entry>

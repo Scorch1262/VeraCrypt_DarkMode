@@ -744,6 +744,7 @@ BEGIN
     POPUP "Settin&gs"
     BEGIN
         MENUITEM "Language...",                 IDM_LANGUAGE
+        MENUITEM "Dark Mode",                   IDM_DARK_MODE
         MENUITEM "Hot Keys...",                 IDM_HOTKEY_SETTINGS
         MENUITEM SEPARATOR
         MENUITEM "System Encryption...",        IDM_SYSENC_SETTINGS

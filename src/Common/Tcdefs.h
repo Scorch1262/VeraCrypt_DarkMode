@@ -61,10 +61,18 @@ extern unsigned short _rotl16(unsigned short value, unsigned char shift);
 // Version displayed to user 
 #define VERSION_STRING					"1.26.31"
 
+// Inoffizieller Build mit Dark Mode (nicht von IDRIX signiert).
+// Fuer einen offiziell signierten Build VC_OFFICIAL_SIGNED_BUILD definieren.
+#ifndef VC_OFFICIAL_SIGNED_BUILD
+#define VC_UNSIGNED_CUSTOM_BUILD
+#endif
+
 #ifdef VC_EFI_CUSTOM_MODE
 #define VERSION_STRING_SUFFIX			"-CustomEFI"
 #elif defined(VC_SKIP_OS_DRIVER_REQ_CHECK)
 #define VERSION_STRING_SUFFIX			"-TESTSIGNING"
+#elif defined(VC_UNSIGNED_CUSTOM_BUILD)
+#define VERSION_STRING_SUFFIX			"-DarkMode"
 #else
 #define VERSION_STRING_SUFFIX			""
 #endif

@@ -1082,6 +1082,9 @@ static void InitMainDialog (HWND hwndDlg)
 
 		// Disable menu item for changing system header key derivation algorithm until it's implemented
 		EnableMenuItem (GetMenu (hwndDlg), IDM_CHANGE_SYS_HEADER_KEY_DERIV_ALGO, MF_GRAYED);
+
+		// Dark Mode: Haekchen entsprechend der gespeicherten Einstellung setzen
+		CheckMenuItem (GetMenu (hwndDlg), IDM_DARK_MODE, MF_BYCOMMAND | (DarkMode_IsEnabledSetting () ? MF_CHECKED : MF_UNCHECKED));
 	}
 
 	try
@@ -10095,6 +10098,20 @@ BOOL CALLBACK MainDialogProc (HWND hwndDlg, UINT uMsg, WPARAM wParam, LPARAM lPa
 
 				NormalCursor ();
 			}
+			return 1;
+		}
+
+		if (lw == IDM_DARK_MODE)
+		{
+			// Nur Darstellung: Einstellung umschalten, wirkt nach Neustart
+			BOOL bNewState = !DarkMode_IsEnabledSetting ();
+			if (DarkMode_SetEnabledSetting (bNewState))
+			{
+				CheckMenuItem (GetMenu (hwndDlg), IDM_DARK_MODE, MF_BYCOMMAND | (bNewState ? MF_CHECKED : MF_UNCHECKED));
+				Info ("DARK_MODE_RESTART", hwndDlg);
+			}
+			else
+				handleWin32Error (hwndDlg, SRC_POS);
 			return 1;
 		}
 

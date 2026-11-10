@@ -1,0 +1,155 @@
+name: Windows Installer (Dark Mode)
+
+# Baut den vollstaendigen VeraCrypt-Installer "VeraCrypt Setup <Version>.exe"
+# genau wie das Original (Signing/sign.bat), nur ohne Code-Signatur:
+#   1. VeraCrypt.exe, VeraCrypt Format.exe, VeraCryptExpander.exe fuer x64 und ARM64
+#   2. VeraCrypt Setup.exe (Win32, wie im Original)
+#   3. Languages.zip und docs.zip
+#   4. Verpacken mit der Original-Routine "VeraCrypt Setup.exe /p" (hier /pq = ohne Meldungsfenster)
+# Die Treiber (veracrypt-x64.sys / veracrypt-arm64.sys) sind von Microsoft signiert
+# und liegen bereits im Repository unter src/Release/Setup Files.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "master", "main" ]
+    tags: [ "v*" ]
+    paths-ignore:
+      - '**.md'
+  pull_request:
+    branches: [ "master", "main" ]
+
+permissions:
+  contents: write
+
+env:
+  DARKMODE_VERSION: "1.0.0"
+  VERACRYPT_VERSION: "1.26.31"
+
+jobs:
+  build-installer:
+    runs-on: windows-2022
+    timeout-minutes: 150
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: NASM und YASM installieren
+        shell: pwsh
+        run: |
+          choco install nasm yasm --no-progress -y
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          "C:\Program Files\NASM" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          "C:\ProgramData\chocolatey\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+      - name: Visual-Studio-Umgebung einrichten
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
+      - name: Werkzeuge pruefen
+        shell: cmd
+        run: |
+          where msbuild
+          where ml64
+          nasm -v
+          yasm --version
+
+      # ---------------- x64 ----------------
+      - name: x64 - Bibliotheken (Crypto, Zip)
+        shell: cmd
+        working-directory: src
+        run: msbuild VeraCrypt.sln /nologo /m:1 /v:minimal /t:"Crypto;Zip" /p:Configuration=Release /p:Platform=x64
+
+      - name: x64 - Programme (VeraCrypt, Format, Expander)
+        shell: cmd
+        working-directory: src
+        run: msbuild VeraCrypt.sln /nologo /m:1 /v:minimal /t:"Mount;Format;ExpandVolume" /p:Configuration=Release /p:Platform=x64
+
+      # ---------------- ARM64 ----------------
+      - name: ARM64 - Bibliotheken (Crypto, Zip)
+        shell: cmd
+        working-directory: src
+        run: msbuild VeraCrypt.sln /nologo /m:1 /v:minimal /t:"Crypto;Zip" /p:Configuration=Release /p:Platform=ARM64
+
+      - name: ARM64 - Programme (VeraCrypt, Format, Expander)
+        shell: cmd
+        working-directory: src
+        run: msbuild VeraCrypt.sln /nologo /m:1 /v:minimal /t:"Mount;Format;ExpandVolume" /p:Configuration=Release /p:Platform=ARM64
+
+      # ---------------- Setup (Win32, wie im Original) ----------------
+      - name: Setup - Zip-Bibliothek (Win32)
+        shell: cmd
+        working-directory: src
+        run: msbuild Common\Zip.vcxproj /nologo /m:1 /v:minimal /p:Configuration=Release /p:Platform=Win32 /p:SolutionDir=%CD%\
+
+      - name: Setup - VeraCrypt Setup.exe (Win32, inkl. Lzma)
+        shell: cmd
+        working-directory: src
+        run: msbuild Setup\Setup.vcxproj /nologo /m:1 /v:minimal /p:Configuration=Release /p:Platform=Win32 /p:SolutionDir=%CD%\
+
+      # ---------------- Paket wie in Signing/sign.bat ----------------
+      - name: Setup-Dateien vorbereiten (Lizenzen, Languages.zip, docs.zip)
+        shell: cmd
+        working-directory: src/Release/Setup Files
+        run: |
+          copy /Y ..\..\LICENSE . || exit /b 1
+          copy /Y ..\..\License.txt . || exit /b 1
+          copy /Y ..\..\NOTICE . || exit /b 1
+          if exist Languages rmdir /S /Q Languages
+          mkdir Languages
+          copy /V /Y "..\..\..\Translations\Language.??.xml" "Languages\." || exit /b 1
+          copy /V /Y "..\..\..\Translations\Language.??-??.xml" "Languages\." || exit /b 1
+          if exist Languages.zip del Languages.zip
+          tar -a -cf Languages.zip Languages || exit /b 1
+          if exist docs rmdir /S /Q docs
+          mkdir docs\html
+          mkdir docs\EFI-DCS
+          xcopy /E /V /Y /Q ..\..\..\doc\html\* docs\html\. || exit /b 1
+          copy /Y "..\..\..\doc\chm\VeraCrypt User Guide*.chm" docs\. || exit /b 1
+          copy /Y "..\..\..\doc\EFI-DCS\*.pdf" docs\EFI-DCS\. || exit /b 1
+          if exist docs.zip del docs.zip
+          tar -a -cf docs.zip docs || exit /b 1
+          dir
+
+      - name: Installer erzeugen (VeraCrypt Setup.exe /pq)
+        shell: pwsh
+        working-directory: src/Release/Setup Files
+        run: |
+          $dir = (Get-Location).Path
+          Remove-Item -ErrorAction SilentlyContinue "VeraCryptPackage.log"
+          $p = Start-Process -FilePath (Join-Path $dir "VeraCrypt Setup.exe") -ArgumentList "/pq" -WorkingDirectory $dir -PassThru
+          if (-not $p.WaitForExit(900000)) { $p.Kill(); Write-Error "Zeitueberschreitung beim Verpacken"; exit 1 }
+          if (Test-Path "VeraCryptPackage.log") { Get-Content "VeraCryptPackage.log" }
+          $setup = "VeraCrypt Setup $env:VERACRYPT_VERSION-DarkMode.exe"
+          if (-not (Test-Path $setup)) { Write-Error "Installer wurde nicht erzeugt: $setup"; exit 1 }
+          Get-Item $setup | Format-Table Name, Length
+
+      - name: Ergebnis zusammenstellen
+        shell: pwsh
+        run: |
+          $name = "VeraCrypt-Setup-$env:VERACRYPT_VERSION-DarkMode-$env:DARKMODE_VERSION"
+          $out = "dist\$name"
+          New-Item -ItemType Directory -Force -Path $out | Out-Null
+          Copy-Item "src\Release\Setup Files\VeraCrypt Setup $env:VERACRYPT_VERSION-DarkMode.exe" "$out\"
+          Copy-Item "DARKMODE.md" "$out\"
+          Get-FileHash "$out\*.exe" -Algorithm SHA256 | ForEach-Object { "$($_.Hash)  $(Split-Path $_.Path -Leaf)" } | Out-File "$out\SHA256SUMS.txt" -Encoding utf8
+          Get-Content "$out\SHA256SUMS.txt"
+          "PKG_DIR=$out" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+          "PKG_NAME=$name" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Artefakt hochladen
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.PKG_NAME }}
+          path: ${{ env.PKG_DIR }}
+          if-no-files-found: error
+
+      - name: GitHub Release erstellen
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            ${{ env.PKG_DIR }}/*.exe
+            ${{ env.PKG_DIR }}/SHA256SUMS.txt

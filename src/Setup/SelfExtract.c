@@ -24,6 +24,7 @@
 #include "Resource.h"
 #include "LzmaLib.h"
 #include <tchar.h>
+#include <stdio.h>
 #include <Strsafe.h>
 
 #ifndef SRC_POS
@@ -74,20 +75,48 @@ void DeobfuscateMagEndMarker (void)
 }
 
 
+// Quiet packaging (command line /pq, e.g. for automated builds with GitHub Actions):
+// messages are written to "VeraCryptPackage.log" in the current directory instead of message boxes.
+static void PkgLog (const wchar_t *level, const wchar_t *msg)
+{
+	FILE *f = _wfopen (L"VeraCryptPackage.log", L"a");
+	if (f)
+	{
+		fwprintf (f, L"[%s] %s\n", level, msg);
+		fclose (f);
+	}
+}
+
+
 static void PkgError (wchar_t *msg)
 {
+	if (Silent)
+	{
+		PkgLog (L"ERROR", msg);
+		return;
+	}
 	MessageBox (NULL, msg, L"VeraCrypt", MB_ICONERROR | MB_SETFOREGROUND | MB_TOPMOST);
 }
 
 
 static void PkgWarning (wchar_t *msg)
 {
+	if (Silent)
+	{
+		PkgLog (L"WARNING", msg);
+		return;
+	}
 	MessageBox (NULL, msg, L"VeraCrypt", MB_ICONWARNING | MB_SETFOREGROUND | MB_TOPMOST);
 }
 
 
 static void PkgInfo (wchar_t *msg)
 {
+	if (Silent)
+	{
+		PkgLog (L"INFO", msg);
+		return;
+	}
 	MessageBox (NULL, msg, L"VeraCrypt", MB_ICONINFORMATION | MB_SETFOREGROUND | MB_TOPMOST);
 }
 
