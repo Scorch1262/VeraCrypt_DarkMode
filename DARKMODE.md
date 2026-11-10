@@ -1,4 +1,4 @@
-# VeraCrypt 1.26.31 – Dark Mode (Modversion 1.0.0)
+# VeraCrypt 1.26.31 – Dark Mode im Lattice-Stil (Modversion 1.1.0)
 
 Dieser Stand von VeraCrypt hat für die Windows-Oberfläche einen **Dark Mode, der standardmäßig aktiv ist**.
 An der Verschlüsselung (Algorithmen, Header, Schlüsselableitung, Treiber) wurde **nichts** geändert.
@@ -20,17 +20,35 @@ Enthalten sind (wie im Original):
   Originaldateien aus dem Repository (`src/Release/Setup Files`), unverändert
 - Sprachdateien (`Languages.zip`) und Dokumentation (`docs.zip`)
 
-## Was ist dunkel?
+## Design (angelehnt an Anduril Lattice)
 
-- Alle Dialoge von VeraCrypt, VeraCrypt Format und VeraCrypt Expander
-- Titelleiste, Menüleiste, Kontext- und Tray-Menüs
-- Eingabefelder, Auswahllisten, Laufwerksliste inkl. Spaltenköpfe, Tabs (Einstellungen), Textfenster
-- Checkboxen, Optionsfelder und Gruppenrahmen werden im klassischen Windows-Stil gezeichnet,
-  damit ihre Beschriftung hell dargestellt werden kann.
+| Element | Farbe |
+|---|---|
+| Fensterhintergrund | `#0A0C0E` (Grafit, fast schwarz) |
+| Eingabefelder, Listen | `#12161A` |
+| Schaltflächen | `#1A1F25`, Hover `#232A31` |
+| Haarlinien / Rahmen | `#2A3139` / `#404A55` |
+| Text / Beschriftungen | `#E4E7EA` / `#8A939D` |
+| Akzent (einzige Akzentfarbe) | Lime `#DFF140` |
+| Warnung | `#FF3535` |
 
-Nicht dunkel: der Installer selbst (bleibt wie das Original), Windows-Standarddialoge
-(MessageBox, Datei öffnen/speichern) und Fortschrittsbalken. Bei aktivem Windows-Kontrastmodus
-bleibt der Dark Mode automatisch aus.
+- Keine Rundungen, keine Verläufe, keine Schatten – unter Windows 11 auch eckige Fenster
+  und dunkle Titelleiste in Hintergrundfarbe
+- Haarlinien statt 3D-Kanten bei Eingabefeldern, Listen, Gruppenrahmen und Trennlinien
+- **Standard-Schaltfläche** (z. B. „Einbinden“, „Weiter“): Lime-Fläche mit dunkler Schrift;
+  übrige Schaltflächen flach mit feinem Rahmen, Fokus mit Lime-Rahmen
+- Beschriftungen von Schaltflächen, Gruppenrahmen, Tabs und Spaltenköpfen in GROSSBUCHSTABEN
+  (nur wenn der Platz reicht, sonst normal)
+- Checkboxen eckig, angehakt Lime mit dunklem Haken; Optionsfelder mit Lime-Punkt
+- Eingabefelder mit Lime-Rahmen, solange sie den Fokus haben
+- Laufwerksliste: ausgewählte Zeile in Lime auf dunkel getöntem Grund; Spaltenköpfe gedämpft in Großbuchstaben
+- Tabs (Einstellungen): aktive Seite mit Lime-Linie
+- Fortschritts- und Entropiebalken flach in Lime (Fehlerzustand rot, Pause gelb)
+- Menüleiste dunkel mit Lime-Linie unter dem aktiven Menü; Hyperlinks in Lime
+
+Nicht angepasst: der Installer selbst (bleibt wie das Original), Windows-Standarddialoge
+(MessageBox, Datei öffnen/speichern) und der Inhalt der Popup-Menüs (Windows-eigenes Dunkel).
+Bei aktivem Windows-Kontrastmodus bleibt der Dark Mode automatisch aus.
 
 ## Ein- und Ausschalten
 
@@ -43,7 +61,7 @@ bleibt der Dark Mode automatisch aus.
 1. Dieses Verzeichnis als Repository zu GitHub hochladen.
 2. **Actions → „Windows Installer (Dark Mode)“** läuft bei jedem Push automatisch
    (oder manuell über „Run workflow“).
-3. Ergebnis: Artefakt `VeraCrypt-Setup-1.26.31-DarkMode-1.0.0` mit dem Installer und `SHA256SUMS.txt`.
+3. Ergebnis: Artefakt `VeraCrypt-Setup-1.26.31-DarkMode-1.1.0` mit dem Installer und `SHA256SUMS.txt`.
 4. Wird ein Tag `v…` gepusht (z. B. `v1.0.0`), entsteht zusätzlich ein GitHub-Release.
 
 Ablauf im Workflow (entspricht `src/Signing/sign.bat` des Originals, nur ohne Code-Signatur):
@@ -66,7 +84,7 @@ x64- und ARM64-Programme bauen → `VeraCrypt Setup.exe` (Win32) bauen → `Lang
 
 | Datei | Änderung |
 |---|---|
-| `src/Common/DarkMode.h` | neu – gesamte Dark-Mode-Logik |
+| `src/Common/DarkMode.h` | neu – gesamte Dark-Mode-Logik (Lattice-Design, eigene Zeichenroutinen) |
 | `src/Common/Dlgcode.c` | Dark Mode beim Start initialisieren und auf Dialoge anwenden; Selbstprüfung für unsignierten Build |
 | `src/Common/Dlgcode.h` | Funktionsdeklarationen |
 | `src/Common/Tcdefs.h` | Versionszusatz `-DarkMode`, Schalter `VC_UNSIGNED_CUSTOM_BUILD` |
