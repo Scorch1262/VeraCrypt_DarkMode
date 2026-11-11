@@ -1,17 +1,20 @@
 /*
- DarkMode.h - Dark Mode im Stil von Anduril Lattice fuer die Windows-Oberflaeche
- von VeraCrypt (VeraCrypt.exe, "VeraCrypt Format.exe", "VeraCryptExpander.exe").
+ DarkMode.h - Dark Mode im Design der eigenen Dashboards (Drucker-, Binder-,
+ MQTT-Dashboard, Editor-Darkmode) fuer die Windows-Oberflaeche von VeraCrypt
+ (VeraCrypt.exe, "VeraCrypt Format.exe", "VeraCryptExpander.exe").
 
  Diese Datei veraendert ausschliesslich die DARSTELLUNG der Dialoge.
  Verschluesselung, Header-Verarbeitung, Schluesselableitung, Treiber-
  Kommunikation usw. werden NICHT beruehrt.
 
- Designprinzipien (angelehnt an Anduril Lattice):
-  - fast schwarzer Grafit-Hintergrund, leicht abgesetzte Eingabeflaechen
-  - haarfeine Linien statt 3D-Kanten, keine Rundungen, keine Verlaeufe
-  - genau eine Akzentfarbe: Lime #DFF140 (Fokus, Auswahl, Standard-Schaltflaeche)
-  - Beschriftungen von Schaltflaechen, Rahmen, Tabs und Spaltenkoepfen in
-    Grossbuchstaben (nur wenn der Platz reicht)
+ Designprinzipien (wie in den Dashboards):
+  - dunkle Flaechen: Fenster #14171C, Eingabefelder #0F1216, Karten #181C22
+  - feine Linien #262B33, leicht abgerundete Ecken
+  - Akzentfarbe Teal #35D0BA (Fokus, Auswahl, Primaer-Schaltflaeche mit
+    dunkler Schrift #0B0D10), Amber #FFB84D fuer Hinweise, Rot #FF5C5C
+    fuer Warnungen
+  - Beschriftungen in normaler Schreibweise, Nebentexte gedaempft #8A92A0
+  - Gruppenrahmen als Karte mit Teal-Statuspunkt vor dem Titel
 
  Funktionsweise:
   - Jeder eigene Dialog wird beim Lokalisieren (LocalizeDialog) bzw. per
@@ -37,7 +40,7 @@
 #define VC_DARKMODE_ENABLED 1
 #endif
 
-#define VC_DARKMODE_VERSION		"1.1.0"
+#define VC_DARKMODE_VERSION		"1.2.0"
 
 #ifdef VC_DARKMODE_ENABLED
 
@@ -54,25 +57,27 @@
 #define DM_PROP_HOT			L"VCDarkModeHot"
 
 /* ------------------------------------------------------------------ */
-/* Farbpalette (Lattice)                                               */
+/* Farbpalette (wie in den Dashboards)                                 */
 /* ------------------------------------------------------------------ */
 
-#define LT_BG				RGB (10, 12, 14)		/* Fensterhintergrund #0A0C0E */
-#define LT_PANEL			RGB (18, 22, 26)		/* Eingabefelder, Listen #12161A */
-#define LT_RAISED			RGB (26, 31, 37)		/* Schaltflaechen #1A1F25 */
-#define LT_HOT				RGB (35, 42, 49)		/* Hover #232A31 */
-#define LT_PRESSED			RGB (46, 54, 63)		/* gedrueckt #2E363F */
-#define LT_BORDER			RGB (42, 49, 57)		/* Haarlinie #2A3139 */
-#define LT_BORDER_STRONG	RGB (64, 74, 85)		/* Rahmen von Bedienelementen #404A55 */
-#define LT_TEXT				RGB (228, 231, 234)		/* Text #E4E7EA */
-#define LT_TEXT_MUTED		RGB (138, 147, 157)		/* Beschriftungen #8A939D */
-#define LT_TEXT_DIS			RGB (88, 96, 105)		/* deaktiviert #586069 */
-#define LT_ACCENT			RGB (223, 241, 64)		/* Anduril Lime #DFF140 */
-#define LT_ACCENT_HOT		RGB (236, 248, 120)		/* Lime hell #ECF878 */
-#define LT_ACCENT_PRESSED	RGB (185, 201, 53)		/* Lime dunkel #B9C935 */
-#define LT_ACCENT_DIM		RGB (38, 44, 14)		/* Auswahlhintergrund #262C0E */
-#define LT_RED				RGB (255, 53, 53)		/* Warnung #FF3535 */
-#define LT_AMBER			RGB (245, 166, 35)		/* Hinweis #F5A623 */
+#define LT_BG				RGB (20, 23, 28)		/* Fenster / Panel #14171C */
+#define LT_PANEL			RGB (15, 18, 22)		/* Eingabefelder, Listen #0F1216 */
+#define LT_RAISED			RGB (24, 28, 34)		/* Karten, Schaltflaechen #181C22 */
+#define LT_HOT				RGB (31, 37, 45)		/* Hover #1F252D */
+#define LT_PRESSED			RGB (42, 49, 59)		/* gedrueckt #2A313B */
+#define LT_BORDER			RGB (38, 43, 51)		/* Linie #262B33 */
+#define LT_BORDER_STRONG	RGB (58, 66, 78)		/* Rahmen von Bedienelementen #3A424E */
+#define LT_TEXT				RGB (230, 233, 238)		/* Text #E6E9EE */
+#define LT_TEXT_MUTED		RGB (138, 146, 160)		/* Nebentext #8A92A0 */
+#define LT_TEXT_DIS			RGB (84, 91, 103)		/* deaktiviert #545B67 */
+#define LT_ACCENT			RGB (53, 208, 186)		/* Teal #35D0BA */
+#define LT_ACCENT_HOT		RGB (84, 224, 204)		/* Teal hell #54E0CC */
+#define LT_ACCENT_PRESSED	RGB (42, 176, 157)		/* Teal dunkel #2AB09D */
+#define LT_ACCENT_DIM		RGB (29, 73, 67)		/* Auswahlhintergrund #1D4943 */
+#define LT_ACCENT_SOFT		RGB (23, 58, 53)		/* Teal weich #173A35 */
+#define LT_INK				RGB (11, 13, 16)		/* Schrift auf Teal #0B0D10 */
+#define LT_RED				RGB (255, 92, 92)		/* Warnung #FF5C5C */
+#define LT_AMBER			RGB (255, 184, 77)		/* Hinweis #FFB84D */
 
 #define DM_SUBCLASS_DIALOG		0x56434431
 #define DM_SUBCLASS_LISTVIEW	0x56434432
@@ -275,15 +280,64 @@ static void DmLine (HDC hdc, int x1, int y1, int x2, int y2, int width, COLORREF
 	DeleteObject (pen);
 }
 
+/* Abgerundetes Rechteck (Fuellung + 1px Rand) */
+static void DmRound (HDC hdc, const RECT *rc, int radius, COLORREF fill, COLORREF border)
+{
+	HPEN pen = CreatePen (PS_SOLID, 1, border);
+	HBRUSH brush = CreateSolidBrush (fill);
+	HGDIOBJ oldPen = SelectObject (hdc, pen);
+	HGDIOBJ oldBrush = SelectObject (hdc, brush);
+	RoundRect (hdc, rc->left, rc->top, rc->right, rc->bottom, radius * 2, radius * 2);
+	SelectObject (hdc, oldBrush);
+	SelectObject (hdc, oldPen);
+	DeleteObject (brush);
+	DeleteObject (pen);
+}
+
+/* Nur abgerundeter Rand, Innenflaeche bleibt unveraendert */
+static void DmRoundFrame (HDC hdc, const RECT *rc, int radius, COLORREF border)
+{
+	HPEN pen = CreatePen (PS_SOLID, 1, border);
+	HGDIOBJ oldPen = SelectObject (hdc, pen);
+	HGDIOBJ oldBrush = SelectObject (hdc, GetStockObject (NULL_BRUSH));
+	RoundRect (hdc, rc->left, rc->top, rc->right, rc->bottom, radius * 2, radius * 2);
+	SelectObject (hdc, oldBrush);
+	SelectObject (hdc, oldPen);
+	DeleteObject (pen);
+}
+
+/* Eckpixel eines Rahmens in Hintergrundfarbe setzen (angedeutete Rundung) */
+static void DmCutCorners (HDC hdc, const RECT *rc, COLORREF bg)
+{
+	SetPixel (hdc, rc->left, rc->top, bg);
+	SetPixel (hdc, rc->right - 1, rc->top, bg);
+	SetPixel (hdc, rc->left, rc->bottom - 1, bg);
+	SetPixel (hdc, rc->right - 1, rc->bottom - 1, bg);
+}
+
+static void DmDot (HDC hdc, int cx, int cy, int d, COLORREF color)
+{
+	HPEN pen = CreatePen (PS_SOLID, 1, color);
+	HBRUSH brush = CreateSolidBrush (color);
+	HGDIOBJ oldPen = SelectObject (hdc, pen);
+	HGDIOBJ oldBrush = SelectObject (hdc, brush);
+	Ellipse (hdc, cx - d / 2, cy - d / 2, cx - d / 2 + d, cy - d / 2 + d);
+	SelectObject (hdc, oldBrush);
+	SelectObject (hdc, oldPen);
+	DeleteObject (brush);
+	DeleteObject (pen);
+}
+
 static HFONT DmSelectFont (HWND hwnd, HDC hdc)
 {
 	HFONT font = (HFONT) SendMessageW (hwnd, WM_GETFONT, 0, 0);
 	return (HFONT) SelectObject (hdc, font ? (HGDIOBJ) font : GetStockObject (DEFAULT_GUI_FONT));
 }
 
-/* Text in Grossbuchstaben umwandeln, wenn er in maxWidth passt */
+/* Optional (VC_DARKMODE_UPPERCASE): Text in Grossbuchstaben, wenn er in maxWidth passt */
 static void DmUpperIfFits (HDC hdc, wchar_t *text, int maxWidth, UINT dtFlags)
 {
+#ifdef VC_DARKMODE_UPPERCASE
 	wchar_t upper[512];
 	RECT calc;
 	size_t len = wcslen (text);
@@ -298,6 +352,10 @@ static void DmUpperIfFits (HDC hdc, wchar_t *text, int maxWidth, UINT dtFlags)
 	DrawTextW (hdc, upper, -1, &calc, (dtFlags & ~(DT_CENTER | DT_RIGHT | DT_VCENTER | DT_BOTTOM)) | DT_CALCRECT | DT_SINGLELINE);
 	if (calc.right - calc.left <= maxWidth)
 		memcpy (text, upper, (len + 1) * sizeof (wchar_t));
+#else
+	/* Im Dashboard-Design bleiben Beschriftungen in normaler Schreibweise */
+	(void) hdc; (void) text; (void) maxWidth; (void) dtFlags;
+#endif
 }
 
 static UINT DmPrefixFlag (HWND hwnd)
@@ -316,7 +374,6 @@ static void DmDarkTitleBar (HWND hwnd)
 {
 	BOOL dark = TRUE;
 	COLORREF caption = LT_BG, text = LT_TEXT, border = LT_BORDER;
-	DWORD corner = 1; /* DWMWCP_DONOTROUND - eckige Fenster wie bei Lattice */
 
 	if (!DmDwmSetWindowAttributePtr)
 		return;
@@ -326,7 +383,6 @@ static void DmDarkTitleBar (HWND hwnd)
 		DmDwmSetWindowAttributePtr (hwnd, 19, &dark, sizeof (dark));
 
 	/* Nur Windows 11 - unter Windows 10 schlagen diese Aufrufe folgenlos fehl */
-	DmDwmSetWindowAttributePtr (hwnd, 33, &corner, sizeof (corner));	/* DWMWA_WINDOW_CORNER_PREFERENCE */
 	DmDwmSetWindowAttributePtr (hwnd, 34, &border, sizeof (border));	/* DWMWA_BORDER_COLOR */
 	DmDwmSetWindowAttributePtr (hwnd, 35, &caption, sizeof (caption));	/* DWMWA_CAPTION_COLOR */
 	DmDwmSetWindowAttributePtr (hwnd, 36, &text, sizeof (text));		/* DWMWA_TEXT_COLOR */
@@ -502,7 +558,10 @@ static LRESULT DmDrawMenuBarItem (DmUahDrawMenuItem *p)
 	GetMenuItemInfoW (p->um.hmenu, p->umi.iPosition, TRUE, &mii);
 
 	if (active)
+	{
 		bg = LT_HOT;
+		color = LT_ACCENT;
+	}
 	if (state & (ODS_GRAYED | ODS_DISABLED))
 		color = LT_TEXT_DIS;
 	else if (state & ODS_INACTIVE)
@@ -510,11 +569,12 @@ static LRESULT DmDrawMenuBarItem (DmUahDrawMenuItem *p)
 	if (state & ODS_NOACCEL)
 		flags |= DT_HIDEPREFIX;
 
-	DmFill (p->um.hdc, &p->dis.rcItem, bg);
+	DmFill (p->um.hdc, &p->dis.rcItem, LT_BG);
 	if (active)
 	{
-		int t = DmScale (p->um.hdc, 2);
-		DmHLine (p->um.hdc, p->dis.rcItem.left, p->dis.rcItem.right, p->dis.rcItem.bottom - t, t, LT_ACCENT);
+		RECT hot = p->dis.rcItem;
+		InflateRect (&hot, 0, -DmScale (p->um.hdc, 2));
+		DmRound (p->um.hdc, &hot, DmScale (p->um.hdc, 4), bg, bg);
 	}
 
 	SetBkMode (p->um.hdc, TRANSPARENT);
@@ -529,12 +589,13 @@ static LRESULT DmDrawMenuBarItem (DmUahDrawMenuItem *p)
 
 static void DmPaintGroupBox (HWND hwnd, HDC hdc)
 {
-	RECT rc, textRc;
+	RECT rc, textRc, frame;
 	wchar_t text[256];
 	TEXTMETRICW tm;
 	HFONT oldFont = DmSelectFont (hwnd, hdc);
-	int lineY, pad = DmScale (hdc, 6), textLeft;
+	int lineY, pad = DmScale (hdc, 8), dot = DmScale (hdc, 6), textLeft;
 	UINT dt = DT_SINGLELINE | DT_LEFT | DT_TOP | DmPrefixFlag (hwnd);
+	BOOL enabled = IsWindowEnabled (hwnd);
 
 	GetClientRect (hwnd, &rc);
 	GetTextMetricsW (hdc, &tm);
@@ -542,36 +603,29 @@ static void DmPaintGroupBox (HWND hwnd, HDC hdc)
 	GetWindowTextW (hwnd, text, ARRAYSIZE (text));
 
 	lineY = rc.top + tm.tmHeight / 2;
-	textLeft = rc.left + pad + DmScale (hdc, 2);
+
+	/* Karte: abgerundeter Rahmen (transparent - Inhalt wird nicht ueberdeckt) */
+	SetRect (&frame, rc.left, lineY, rc.right, rc.bottom);
+	DmRoundFrame (hdc, &frame, DmScale (hdc, 6), LT_BORDER);
 
 	if (text[0])
 	{
-		DmUpperIfFits (hdc, text, rc.right - textLeft - pad, dt);
+		RECT bgRc;
+		textLeft = rc.left + pad + dot + DmScale (hdc, 6);
 		SetRect (&textRc, textLeft, rc.top, rc.right - pad, rc.top + tm.tmHeight);
 		DrawTextW (hdc, text, -1, &textRc, dt | DT_CALCRECT);
 		if (textRc.right > rc.right - pad)
 			textRc.right = rc.right - pad;
-	}
-	else
-		SetRect (&textRc, textLeft, lineY, textLeft, lineY);
 
-	/* Rahmen aus Haarlinien, oben mit Luecke fuer die Beschriftung */
-	DmHLine (hdc, rc.left, textLeft - DmScale (hdc, 4) > rc.left ? textLeft - DmScale (hdc, 4) : rc.left, lineY, 1, LT_BORDER);
-	DmHLine (hdc, text[0] ? textRc.right + DmScale (hdc, 4) : textLeft, rc.right, lineY, 1, LT_BORDER);
-	DmVLine (hdc, rc.left, lineY, rc.bottom, 1, LT_BORDER);
-	DmVLine (hdc, rc.right - 1, lineY, rc.bottom, 1, LT_BORDER);
-	DmHLine (hdc, rc.left, rc.right, rc.bottom - 1, 1, LT_BORDER);
-
-	/* kleiner Akzentstrich oben links */
-	DmHLine (hdc, rc.left, rc.left + DmScale (hdc, 3), lineY, 1, LT_ACCENT);
-
-	if (text[0])
-	{
-		RECT bgRc = textRc;
-		InflateRect (&bgRc, DmScale (hdc, 3), 0);
+		/* Luecke im Rahmen fuer Statuspunkt und Titel */
+		SetRect (&bgRc, rc.left + pad - DmScale (hdc, 4), rc.top, textRc.right + DmScale (hdc, 4), rc.top + tm.tmHeight);
 		DmFill (hdc, &bgRc, LT_BG);
+
+		/* Teal-Statuspunkt wie in den Dashboards */
+		DmDot (hdc, rc.left + pad + dot / 2, lineY, dot, enabled ? LT_ACCENT : LT_TEXT_DIS);
+
 		SetBkMode (hdc, TRANSPARENT);
-		SetTextColor (hdc, IsWindowEnabled (hwnd) ? LT_TEXT_MUTED : LT_TEXT_DIS);
+		SetTextColor (hdc, enabled ? LT_TEXT_MUTED : LT_TEXT_DIS);
 		DrawTextW (hdc, text, -1, &textRc, dt);
 	}
 
@@ -638,21 +692,22 @@ static void DmPaintCheckOrRadio (HWND hwnd, HDC hdc, BOOL radio)
 		boxBorder = LT_BORDER;
 		boxFill = LT_BG;
 	}
-	else if (check == BST_CHECKED)
+	else if (check == BST_CHECKED || check == BST_INDETERMINATE)
 	{
+		/* angehakt: Teal-Rand auf weichem Teal-Grund */
 		boxBorder = pushed ? LT_ACCENT_PRESSED : (hot ? LT_ACCENT_HOT : LT_ACCENT);
-		boxFill = boxBorder;
+		boxFill = LT_ACCENT_SOFT;
 	}
 	else
 	{
-		boxBorder = pushed ? LT_ACCENT : (hot ? LT_TEXT_MUTED : LT_BORDER_STRONG);
+		boxBorder = pushed ? LT_ACCENT : (hot ? LT_ACCENT : LT_BORDER_STRONG);
 		boxFill = pushed ? LT_HOT : LT_PANEL;
 	}
 
 	if (radio)
 	{
 		HPEN pen = CreatePen (PS_SOLID, 1, boxBorder);
-		HBRUSH brush = CreateSolidBrush (check == BST_CHECKED ? LT_PANEL : boxFill);
+		HBRUSH brush = CreateSolidBrush (boxFill);
 		HGDIOBJ oldPen = SelectObject (hdc, pen);
 		HGDIOBJ oldBrush = SelectObject (hdc, brush);
 		Ellipse (hdc, box.left, box.top, box.right, box.bottom);
@@ -680,17 +735,16 @@ static void DmPaintCheckOrRadio (HWND hwnd, HDC hdc, BOOL radio)
 	}
 	else
 	{
-		DmFill (hdc, &box, boxFill);
-		DmFrame (hdc, &box, boxBorder);
+		DmRound (hdc, &box, DmScale (hdc, 3), boxFill, boxBorder);
 
 		if (check == BST_CHECKED)
 		{
-			/* Haken in Hintergrundfarbe auf Lime */
+			/* Teal-Haken */
 			int w = DmScale (hdc, 2);
 			int x1 = box.left + size * 22 / 100, y1 = box.top + size * 52 / 100;
 			int x2 = box.left + size * 42 / 100, y2 = box.top + size * 72 / 100;
 			int x3 = box.left + size * 78 / 100, y3 = box.top + size * 30 / 100;
-			COLORREF mark = enabled ? LT_BG : LT_TEXT_DIS;
+			COLORREF mark = enabled ? LT_ACCENT : LT_TEXT_DIS;
 			DmLine (hdc, x1, y1, x2, y2, w, mark);
 			DmLine (hdc, x2, y2, x3, y3, w, mark);
 		}
@@ -727,7 +781,7 @@ static void DmPaintCheckOrRadio (HWND hwnd, HDC hdc, BOOL radio)
 
 static void DmPaintPushButton (HWND hwnd, HDC hdc)
 {
-	RECT rc, textRc;
+	RECT rc, textRc, shape;
 	wchar_t text[512];
 	LONG_PTR style = GetWindowLongPtrW (hwnd, GWL_STYLE);
 	LONG_PTR type = style & BS_TYPEMASK;
@@ -741,7 +795,7 @@ static void DmPaintPushButton (HWND hwnd, HDC hdc)
 	HFONT oldFont = DmSelectFont (hwnd, hdc);
 	UINT dt = DmPrefixFlag (hwnd) | DT_CENTER | ((style & BS_MULTILINE) ? DT_WORDBREAK : (DT_SINGLELINE | DT_VCENTER));
 	COLORREF bg, border, color;
-	int pad = DmScale (hdc, 8), splitWidth = 0;
+	int pad = DmScale (hdc, 8), splitWidth = 0, radius = DmScale (hdc, 5);
 
 	GetClientRect (hwnd, &rc);
 
@@ -751,27 +805,28 @@ static void DmPaintPushButton (HWND hwnd, HDC hdc)
 	}
 	else if (isDefault)
 	{
-		/* Standard-Schaltflaeche: Lime-Flaeche mit dunkler Schrift */
+		/* Primaer-Schaltflaeche: Teal-Flaeche mit dunkler Schrift */
 		bg = pushed ? LT_ACCENT_PRESSED : (hot ? LT_ACCENT_HOT : LT_ACCENT);
 		border = bg;
-		color = LT_BG;
+		color = LT_INK;
 	}
 	else
 	{
+		/* Sekundaer: Karte mit Rand, Hover in Teal */
 		bg = pushed ? LT_PRESSED : (hot ? LT_HOT : LT_RAISED);
-		border = focus ? LT_ACCENT : (hot ? LT_TEXT_MUTED : LT_BORDER_STRONG);
-		color = LT_TEXT;
+		border = (focus || hot) ? LT_ACCENT : LT_BORDER;
+		color = hot ? LT_ACCENT : LT_TEXT;
 	}
 
 	DmFill (hdc, &rc, LT_BG);
-	DmFill (hdc, &rc, bg);
-	DmFrame (hdc, &rc, border);
+	shape = rc;
+	DmRound (hdc, &shape, radius, bg, border);
 
 	if (isDefault && focus && enabled)
 	{
 		RECT inner = rc;
 		InflateRect (&inner, -DmScale (hdc, 2), -DmScale (hdc, 2));
-		DmFrame (hdc, &inner, LT_BG);
+		DmRoundFrame (hdc, &inner, radius - DmScale (hdc, 1), LT_INK);
 	}
 
 	textRc = rc;
@@ -781,7 +836,7 @@ static void DmPaintPushButton (HWND hwnd, HDC hdc)
 		splitWidth = (rc.bottom - rc.top) * 4 / 5;
 		if (splitWidth < DmScale (hdc, 14))
 			splitWidth = DmScale (hdc, 14);
-		DmVLine (hdc, rc.right - splitWidth, rc.top + DmScale (hdc, 4), rc.bottom - DmScale (hdc, 4), 1, isDefault && enabled ? LT_BG : border);
+		DmVLine (hdc, rc.right - splitWidth, rc.top + DmScale (hdc, 5), rc.bottom - DmScale (hdc, 5), 1, isDefault && enabled ? LT_INK : border);
 		cx = rc.right - splitWidth / 2;
 		cy = (rc.top + rc.bottom) / 2;
 		s = DmScale (hdc, 3);
@@ -796,9 +851,7 @@ static void DmPaintPushButton (HWND hwnd, HDC hdc)
 	GetWindowTextW (hwnd, text, ARRAYSIZE (text));
 	if (text[0])
 	{
-		if (!(style & BS_MULTILINE))
-			DmUpperIfFits (hdc, text, (textRc.right - textRc.left) - pad, dt);
-		else
+		if (style & BS_MULTILINE)
 		{
 			RECT calc = textRc;
 			int h;
@@ -991,7 +1044,8 @@ static void DmPaintNcFrame (HWND hwnd)
 		else if (GetFocus () == hwnd && !(st & ES_READONLY))
 			outer = LT_ACCENT;
 	}
-	else if (DmIsClass (hwnd, PROGRESS_CLASSW) || DmIsClass (hwnd, L"Static"))
+	else if (DmIsClass (hwnd, PROGRESS_CLASSW) || DmIsClass (hwnd, L"Static")
+		|| DmIsClass (hwnd, WC_LISTVIEWW) || DmIsClass (hwnd, L"ListBox"))
 		outer = LT_BORDER;
 
 	hdc = GetWindowDC (hwnd);
@@ -1001,6 +1055,7 @@ static void DmPaintNcFrame (HWND hwnd)
 	GetWindowRect (hwnd, &rc);
 	OffsetRect (&rc, -rc.left, -rc.top);
 	DmFrame (hdc, &rc, outer);
+	DmCutCorners (hdc, &rc, LT_BG);
 	if (thick == 2)
 	{
 		InflateRect (&rc, -1, -1);
@@ -1061,6 +1116,7 @@ static void DmPaintComboFrame (HWND hwnd)
 
 	GetClientRect (hwnd, &rc);
 	DmFrame (hdc, &rc, border);
+	DmCutCorners (hdc, &rc, LT_BG);
 	ReleaseDC (hwnd, hdc);
 }
 
@@ -1097,7 +1153,7 @@ static LRESULT CALLBACK DmComboSubclassProc (HWND hwnd, UINT msg, WPARAM wParam,
 }
 
 /* ------------------------------------------------------------------ */
-/* Fortschrittsbalken: flach, Lime auf dunkler Spur                     */
+/* Fortschrittsbalken: Teal auf dunkler Spur                           */
 /* ------------------------------------------------------------------ */
 
 static void DmPaintProgress (HWND hwnd, HDC hdc)
@@ -1110,6 +1166,7 @@ static void DmPaintProgress (HWND hwnd, HDC hdc)
 
 	GetClientRect (hwnd, &rc);
 	DmFill (hdc, &rc, LT_PANEL);
+	InflateRect (&rc, -DmScale (hdc, 1), -DmScale (hdc, 1));
 
 	memset (&range, 0, sizeof (range));
 	SendMessageW (hwnd, PBM_GETRANGE, TRUE, (LPARAM) &range);
@@ -1130,7 +1187,10 @@ static void DmPaintProgress (HWND hwnd, HDC hdc)
 			pos = range.iHigh;
 		bar = rc;
 		bar.right = rc.left + (int) (((LONGLONG) (rc.right - rc.left) * (pos - range.iLow)) / span);
-		DmFill (hdc, &bar, color);
+		if (bar.right - bar.left > DmScale (hdc, 4))
+			DmRound (hdc, &bar, DmScale (hdc, 2), color, color);
+		else
+			DmFill (hdc, &bar, color);
 	}
 }
 
@@ -1265,7 +1325,7 @@ static void DmPaintHeader (HWND hwnd, HDC hdc)
 	int pad = DmScale (hdc, 6);
 
 	GetClientRect (hwnd, &rc);
-	DmFill (hdc, &rc, LT_PANEL);
+	DmFill (hdc, &rc, LT_RAISED);
 	SetBkMode (hdc, TRANSPARENT);
 
 	for (i = 0; i < count; i++)
@@ -1350,7 +1410,7 @@ static LRESULT CALLBACK DmListViewSubclassProc (HWND hwnd, UINT msg, WPARAM wPar
 	return DefSubclassProc (hwnd, msg, wParam, lParam);
 }
 
-/* Zeilen einer Liste: Auswahl als Lime-Text auf dunkel getoentem Grund */
+/* Zeilen einer Liste: Auswahl auf Teal-getoentem Grund (#1D4943) */
 static BOOL DmHandleListViewCustomDraw (HWND hwndDlg, LPARAM lParam, LRESULT appResult, LRESULT *pResult)
 {
 	NMLVCUSTOMDRAW *cd = (NMLVCUSTOMDRAW *) lParam;
@@ -1377,7 +1437,7 @@ static BOOL DmHandleListViewCustomDraw (HWND hwndDlg, LPARAM lParam, LRESULT app
 			if (selected)
 			{
 				cd->nmcd.uItemState &= ~(CDIS_SELECTED | CDIS_FOCUS);
-				cd->clrText = IsWindowEnabled (list) ? LT_ACCENT : LT_TEXT_MUTED;
+				cd->clrText = IsWindowEnabled (list) ? LT_TEXT : LT_TEXT_MUTED;
 				cd->clrTextBk = LT_ACCENT_DIM;
 			}
 			else
@@ -1394,36 +1454,50 @@ static BOOL DmHandleListViewCustomDraw (HWND hwndDlg, LPARAM lParam, LRESULT app
 }
 
 /* ------------------------------------------------------------------ */
-/* Tabs: Beschriftung in Grossbuchstaben, aktive Seite mit Lime-Linie   */
+/* Tabs: Segment-Auswahl, aktive Seite als Teal-Flaeche               */
 /* ------------------------------------------------------------------ */
 
 static void DmPaintTab (HWND hwnd, HDC hdc)
 {
-	RECT rc, display, rowRc;
+	RECT rc, display, row;
 	HFONT oldFont = DmSelectFont (hwnd, hdc);
 	int count = TabCtrl_GetItemCount (hwnd);
 	int sel = TabCtrl_GetCurSel (hwnd);
-	int i, bar = DmScale (hdc, 2);
-	int rowBottom = 0;
+	int i, rowBottom = 0, radius = DmScale (hdc, 6);
+	BOOL enabled = IsWindowEnabled (hwnd);
 
 	GetClientRect (hwnd, &rc);
 	DmFill (hdc, &rc, LT_BG);
 
+	SetRectEmpty (&row);
 	for (i = 0; i < count; i++)
 	{
 		RECT item;
-		if (TabCtrl_GetItemRect (hwnd, i, &item) && item.bottom > rowBottom)
-			rowBottom = item.bottom;
+		if (TabCtrl_GetItemRect (hwnd, i, &item))
+		{
+			UnionRect (&row, &row, &item);
+			if (item.bottom > rowBottom)
+				rowBottom = item.bottom;
+		}
 	}
 
+	/* Inhaltsbereich als Karte */
 	display = rc;
 	TabCtrl_AdjustRect (hwnd, FALSE, &display);
 	InflateRect (&display, 2, 2);
-	if (rowBottom > 0 && display.top < rowBottom)
-		display.top = rowBottom;
-	DmFrame (hdc, &display, LT_BORDER);
+	if (rowBottom > 0 && display.top < rowBottom + DmScale (hdc, 2))
+		display.top = rowBottom + DmScale (hdc, 2);
+	DmRoundFrame (hdc, &display, radius, LT_BORDER);
 
-	SetRect (&rowRc, rc.left, rc.top, rc.right, display.top);
+	/* Tab-Leiste als Segment-Auswahl (wie die Zeitbereich-Auswahl der Dashboards) */
+	if (!IsRectEmpty (&row))
+	{
+		InflateRect (&row, DmScale (hdc, 2), 0);
+		if (row.left < rc.left)
+			row.left = rc.left;
+		DmRound (hdc, &row, radius, LT_RAISED, LT_BORDER);
+	}
+
 	SetBkMode (hdc, TRANSPARENT);
 
 	for (i = 0; i < count; i++)
@@ -1445,12 +1519,14 @@ static void DmPaintTab (HWND hwnd, HDC hdc)
 
 		if (i == sel)
 		{
-			DmFill (hdc, &item, LT_PANEL);
-			DmHLine (hdc, item.left, item.right, item.bottom - bar, bar, LT_ACCENT);
+			RECT pill = item;
+			InflateRect (&pill, -DmScale (hdc, 2), -DmScale (hdc, 3));
+			DmRound (hdc, &pill, DmScale (hdc, 4), enabled ? LT_ACCENT : LT_PRESSED, enabled ? LT_ACCENT : LT_PRESSED);
+			SetTextColor (hdc, enabled ? LT_INK : LT_TEXT_DIS);
 		}
+		else
+			SetTextColor (hdc, enabled ? LT_TEXT_MUTED : LT_TEXT_DIS);
 
-		DmUpperIfFits (hdc, text, (item.right - item.left) - DmScale (hdc, 4), dt);
-		SetTextColor (hdc, !IsWindowEnabled (hwnd) ? LT_TEXT_DIS : (i == sel ? LT_TEXT : LT_TEXT_MUTED));
 		DrawTextW (hdc, text, -1, &item, dt);
 	}
 

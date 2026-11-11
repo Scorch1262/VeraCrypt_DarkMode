@@ -23,7 +23,7 @@ permissions:
   contents: write
 
 env:
-  DARKMODE_VERSION: "1.1.0"
+  DARKMODE_VERSION: "1.2.0"
   VERACRYPT_VERSION: "1.26.31"
 
 jobs:
